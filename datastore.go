@@ -22,7 +22,8 @@ type cacheDataStoreImpl struct {
 }
 
 func (ds * cacheDataStoreImpl) Store(user string, name string, note string) error {
-	return ds.c.Add(fmt.Sprintf("%s-%s", user, name), note, cache.DefaultExpiration)
+	ds.c.Set(fmt.Sprintf("%s-%s", user, name), note, cache.DefaultExpiration)
+	return nil
 }
 
 func (ds * cacheDataStoreImpl) Get(user string, name string) (string, error) {

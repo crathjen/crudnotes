@@ -12,7 +12,7 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(AuthMiddleware())
-	r.Post("/note/{noteTitle}", newPostHandler(ds))
+	r.Put("/note/{noteTitle}", newPutHandler(ds))
 	r.Get("/note/{noteTitle}", newGetHandler(ds))
 	r.Delete("/note/{noteTitle}", newDeleteHandler(ds))
 

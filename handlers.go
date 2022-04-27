@@ -8,7 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func newPostHandler(ds DataStore) http.HandlerFunc{
+func newPutHandler(ds DataStore) http.HandlerFunc{
 	return func(w http.ResponseWriter, r *http.Request) {
 		note, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -22,7 +22,12 @@ func newPostHandler(ds DataStore) http.HandlerFunc{
 			w.Write([]byte("error retrieving user"))
 			return 
 		}
-		ds.Store(user, chi.URLParam(r, "noteTitle"), string(note))
+		err = ds.Store(user, chi.URLParam(r, "noteTitle"), string(note))
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("error storing note"))
+			return 
+		}
 		w.Write([]byte("note stored successfully"))
 	}
 }
